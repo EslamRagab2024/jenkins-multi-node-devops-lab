@@ -5,27 +5,26 @@ pipeline {
         stage('Build & Test on Container Agent') {
             agent {
                 node {
-                    label 'docker-agent' 
+                    label 'docker-agent'
                 }
             }
             steps {
-                echo 'Building and testing application on Docker Agent...'
-                //  sh 'docker build -t my-app .'
-                sh 'python3 --version || docker --version'
+                echo 'Building and testing on Container Agent...'
+                sh 'whoami && pwd'
+                sh 'java -version || echo "Java is executing inside container"'
             }
         }
 
         stage('Deploy to AWS EC2 Agent') {
             agent {
                 node {
-                    label 'instance-agent' 
+                    label 'aws-ec2-agent' // تأكد إن ده نفس الـ Label المكتوب في Jenkins للـ EC2
                 }
             }
             steps {
                 echo 'Deploying application to AWS EC2 Instance...'
                 sh 'docker --version'
-                //  Application container
-                // sh 'docker run -d -p 8080:8080 --name my-app-container my-app'
+                sh 'uname -a'
             }
         }
     }
