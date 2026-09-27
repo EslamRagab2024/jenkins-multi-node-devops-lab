@@ -1,0 +1,63 @@
+---
+- name: Configure EC2 Instance as Jenkins Agent
+  hosts: all
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Create Swap File
+      ansible.builtin.command: fallocate -l 2G /swapfile
+      args:
+        creates: /swapfile
+
+    # 2. ضبط الصلاحيات
+    - name: Set Swap File Permissions
+      ansible.builtin.file:
+        path: /swapfile
+        owner: root
+        group: root
+        mode: '0600'
+
+    # 3. تجهيز الـ Swap File
+    - name: Format Swap File
+      ansible.builtin.command: mkswap /swapfile
+      register: mkswap_result
+      changed_when: "'setting up swapspace' in mkswap_result.stdout"
+      failed_when: false
+
+    # 4. تفعيل الـ Swap File
+    - name: Enable Swap File
+      ansible.builtin.command: swapon /swapfile
+      register: swapon_result
+      changed_when: swapon_result.rc == 0
+      failed_when: false
+    - name: Install Java 17 OpenJDK
+      ansible.builtin.dnf:
+        name: java-17-openjdk
+        state: present
+
+    - name: Add Docker YUM repository
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/centos/docker-ce.repo
+        dest: /etc/yum.repos.d/docker-ce.repo
+        mode: '0644'
+
+    - name: Install Docker CE packages
+      ansible.builtin.dnf:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        state: present
+
+    - name: Start and enable Docker service
+      ansible.builtin.systemd:
+        name: docker
+        state: started
+        enabled: yes
+
+    
+    - name: Add ec2-user to docker group
+      ansible.builtin.user:
+        name: ec2-user
+        groups: docker
+        append: yes

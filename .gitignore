@@ -1,0 +1,23 @@
+# Terraform local state and backups 
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+
+# Terraform crash logs
+crash.log
+crash.*.log
+
+# Terraform CLI configuration / HCL lock files
+.terraform/
+.terraform.lock.hcl
+
+# Sensitive variable files
+*.tfvars
+*.tfvars.json
+
+# Ansible temporary / retry files
+*.retry
+
+# System / OS files
+.DS_Store
+Thumbs.db
