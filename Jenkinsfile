@@ -5,7 +5,7 @@ pipeline {
         stage('Build & Test on Container Agent') {
             agent {
                 node {
-                    label 'docker-agent'
+                    label 'docker-ssh-agent'
                 }
             }
             steps {
@@ -18,7 +18,7 @@ pipeline {
         stage('Deploy to AWS EC2 Agent') {
             agent {
                 node {
-                    label 'aws-ec2-agent' // تأكد إن ده نفس الـ Label المكتوب في Jenkins للـ EC2
+                    label 'aws-ec2-agent' 
                 }
             }
             steps {
