@@ -12,7 +12,8 @@ pipeline {
             steps {
                 echo '=== Stage 1: Testing Application inside Isolated Python Container ==='
                 sh '''
-                    docker run --rm -v "$(pwd)":/workspace -w /workspace python:3.10-slim sh -c "pip install -r app/requirements.txt && python3 -m py_compile app/app.py"
+                    cd app
+                    docker run --rm -v "$(pwd)":/app -w /app python:3.10-slim sh -c "pip install -r requirements.txt && python3 -m py_compile app.py"
                 '''
             }
         }
