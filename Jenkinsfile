@@ -10,11 +10,9 @@ pipeline {
         stage('Lint & Test') {
             agent { label 'docker-ssh-agent' }
             steps {
-                echo '=== Stage 1: Testing Application on Container Agent ==='
+                echo '=== Stage 1: Testing Application inside Isolated Python Container ==='
                 sh '''
-                    docker run --rm -v $(pwd):/workspace -w /workspace python:3.10-slim sh -c "
-                    pip install -r app/requirements.txt &&
-                    python3 -m py_compile app/app.py
+                    docker run --rm -v "$(pwd)":/workspace -w /workspace python:3.10-slim sh -c "pip install -r app/requirements.txt && python3 -m py_compile app/app.py"
                 '''
             }
         }
@@ -48,10 +46,10 @@ pipeline {
 
     post {
         success {
-            echo 'Application deployed successfully on AWS EC2!'
+            echo ' Application deployed successfully on AWS EC2!'
         }
         failure {
-            echo 'Pipeline failed! Check logs.'
+            echo ' Pipeline failed! Check logs.'
         }
     }
 }
