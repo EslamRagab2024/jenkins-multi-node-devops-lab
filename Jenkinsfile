@@ -13,7 +13,7 @@ pipeline {
                 echo '=== Stage 1: Testing Application inside Isolated Python Container ==='
                 sh '''
                     docker build -f Dockerfile_app -t flask-test-image .
-                    docker run --rm flask-test-image python3 -m py_compile app/app.py
+                    docker run --rm flask-test-image python3 -m py_compile app.py
                 '''
             }
         }
