@@ -12,8 +12,8 @@ pipeline {
             steps {
                 echo '=== Stage 1: Testing Application inside Isolated Python Container ==='
                 sh '''
-                    cd app
-                    docker run --rm -v "$(pwd)":/app -w /app python:3.10-slim sh -c "pip install -r requirements.txt && python3 -m py_compile app.py"
+                    docker build -f Dockerfile_app -t flask-test-image .
+                    docker run --rm flask-test-image python3 -m py_compile app/app.py
                 '''
             }
         }
