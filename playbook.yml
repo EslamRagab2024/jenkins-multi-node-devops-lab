@@ -9,7 +9,6 @@
       args:
         creates: /swapfile
 
-    # 2. ضبط الصلاحيات
     - name: Set Swap File Permissions
       ansible.builtin.file:
         path: /swapfile
@@ -17,20 +16,20 @@
         group: root
         mode: '0600'
 
-    # 3. تجهيز الـ Swap File
+    # 3.   Swap File
     - name: Format Swap File
       ansible.builtin.command: mkswap /swapfile
       register: mkswap_result
       changed_when: "'setting up swapspace' in mkswap_result.stdout"
       failed_when: false
 
-    # 4. تفعيل الـ Swap File
+    # 4.  enable Swap File
     - name: Enable Swap File
       ansible.builtin.command: swapon /swapfile
       register: swapon_result
       changed_when: swapon_result.rc == 0
       failed_when: false
-    - name: Install Java 17 OpenJDK
+    - name: Install Java 21 OpenJDK
       ansible.builtin.dnf:
         name: java-17-openjdk
         state: present

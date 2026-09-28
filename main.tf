@@ -68,10 +68,10 @@ data "aws_ami" "rhel" {
   }
 }
 
-# 6. Key Pair (ضفنا المفتاح عشان نستخدمه في SSH و Ansible)
+# 6. Key Pair 
 resource "aws_key_pair" "deployer" {
   key_name   = "jenkins-agent-key"
-  public_key = file("~/.ssh/jenkins_agent_key.pub") # استخدم نفس الـ Public Key بتاعك
+  public_key = file("~/.ssh/jenkins_agent_key.pub") #  use  your Public key store local
 }
 
 # 7. Security Group
@@ -130,7 +130,7 @@ resource "aws_instance" "app" {
   }
 }
 
-# Output الـ IP عشان نعرف نستخدمه في Ansible على طول
+# Output 
 output "ec2_public_ip" {
   value       = aws_instance.app.public_ip
   description = "Public IP of the EC2 Instance"

@@ -1,2 +1,2 @@
 [ec2_agents]
-54.152.7.163 ansible_user=ec2-user ansible_ssh_private_key_file=~/.ssh/jenkins_agent_key
+44.195.85.203 ansible_user=ec2-user ansible_ssh_private_key_file=~/.ssh/jenkins_agent_key
