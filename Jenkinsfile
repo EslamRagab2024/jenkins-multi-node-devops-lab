@@ -12,9 +12,8 @@ pipeline {
             steps {
                 echo '=== Stage 1: Testing Application on Container Agent ==='
                 sh '''
-                    python3 -m venv venv || true
-                    . venv/bin/activate || true
-                    pip install -r app/requirements.txt
+                    docker run --rm -v $(pwd):/workspace -w /workspace python:3.10-slim sh -c "
+                    pip install -r app/requirements.txt &&
                     python3 -m py_compile app/app.py
                 '''
             }
