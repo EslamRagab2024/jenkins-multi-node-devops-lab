@@ -33,6 +33,7 @@ pipeline {
 
         stage('Deploy on AWS EC2') {
             agent { label 'aws-ec2-agent' }
+            options { skipDefaultCheckout() } // skip checkout as ec2 not have git
             steps {
                 echo '=== Stage 3: Pulling and Deploying Container on EC2 ==='
                 sh '''
